@@ -1,4 +1,4 @@
-#include "CitiesMap.h"
+#include "Cities.h"
 #include <iostream>
 #include "vector.cpp"
 #include "pair.cpp"
@@ -10,7 +10,7 @@ using std::cin;
 using std::cout;
 using std::endl;
 
-void CitiesMap::readMap()
+void Cities::readMap()
 {
 	int w, h;
 	cin >> w >> h;
@@ -20,42 +20,9 @@ void CitiesMap::readMap()
 	for (int i = 0; i < w; i++)
 		for (int j = 0; j < h; j++)
 			map[i][j] = readChar();
-
-	/*
-	
-20 20
-.........GDANSK.....
-........*...........
-........#...........
-........#...........
-*##################.
-#SZCZECIN.........#.
-#.................#.
-##................#.
-.############*#####.
-.#...WARSZAWA.......
-.#..................
-.#############......
-.#...........#......
-.#..WROCLAW.##......
-.#..*.......*.......
-.####.......#KIELCE.
-......*##.#########.
-.OPOLE..#.*.......#.
-........#.KRAKOW..#.
-........###########.
-	
-3 3
-MAN
-.*.
-...
-
-
-	*/
-
 }
 
-void CitiesMap::printMap()
+void Cities::printMap()
 {
 	for (int i = 0; i < map.size(); i++)
 	{
@@ -67,7 +34,7 @@ void CitiesMap::printMap()
 	}
 }
 
-void CitiesMap::loadCities()
+void Cities::loadCities()
 {
 	for (int i = 0; i < map.size(); i++)
 	{
@@ -82,7 +49,7 @@ void CitiesMap::loadCities()
 	}
 }
 
-string CitiesMap::loadCityName(int i, int j)
+string Cities::loadCityName(int i, int j)
 {
 	string name;
 	const int tab[] = { -1, 0, 1 }; 
@@ -100,7 +67,7 @@ string CitiesMap::loadCityName(int i, int j)
 	}
 }
 
-void CitiesMap::loadStringGeneral(string& name, int i, int j)
+void Cities::loadStringGeneral(string& name, int i, int j)
 {
 	if (isFirstLetter(i, j))
 	{
@@ -113,46 +80,39 @@ void CitiesMap::loadStringGeneral(string& name, int i, int j)
 	}
 }
 
-void CitiesMap::loadString(string& name, int i, int j,  bool readingTypeFlag)
+void Cities::loadString(string& name, int i, int j,  bool readingTypeFlag)
 {
 	while (isInBounds(i, j) && isPartOfTheName(map[i][j]))
 	{
 		name += map[i][j];
-		if (readingTypeFlag == READ_FORWARD)
-		{
-			j++;
-		}
-		else
-		{
-			j--;
-		}
+		j += readingTypeFlag == READ_FORWARD ? 1 : -1;
 	}
 }
 
-bool CitiesMap::isPartOfTheName(char ch)
+bool Cities::isPartOfTheName(char ch)
 {
 	return ch != '*' && ch != '#' && ch != '.';
 }
 
-bool CitiesMap::isFirstLetter(int i, int j)
+bool Cities::isFirstLetter(int i, int j)
 {
 	return isInBounds(i, j) && isPartOfTheName(map[i][j]) &&
 		(!isInBounds(i, j - 1) || !isPartOfTheName(map[i][j - 1]));
 }
 
-bool CitiesMap::isLastLetter(int i, int j)
+bool Cities::isLastLetter(int i, int j)
 {
 	return isInBounds(i, j) && isPartOfTheName(map[i][j]) &&
 		(!isInBounds(i, j + 1) || !isPartOfTheName(map[i][j + 1]));
 }
 
-void CitiesMap::printCities()
+void Cities::printCities()
 {
 	for (int i = 0; i < cities.size(); i++)
 		cout << cities[i].name << ": " << cities[i].pos.x << "," << cities[i].pos.y << endl;
 }
 
-char CitiesMap::readChar()
+char Cities::readChar()
 {
 	char ch = (char)getchar();
 	while (ch == ' ' || ch == '\n')
@@ -160,7 +120,7 @@ char CitiesMap::readChar()
 	return ch;
 }
 
-bool CitiesMap::isInBounds(int i, int j)
+bool Cities::isInBounds(int i, int j)
 {
 	return  i >= 0
 		 && j >= 0

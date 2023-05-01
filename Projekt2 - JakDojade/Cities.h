@@ -5,7 +5,7 @@
 #include "string.h"
 #include "City.h"
 
-class CitiesMap
+class Cities
 {
 
 public:

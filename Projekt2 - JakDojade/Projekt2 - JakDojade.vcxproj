@@ -127,7 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="CitiesMap.cpp" />
+    <ClCompile Include="Cities.cpp" />
     <ClCompile Include="City.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="pair.cpp" />
@@ -137,7 +137,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="algorithm.h" />
-    <ClInclude Include="CitiesMap.h" />
+    <ClInclude Include="Cities.h" />
     <ClInclude Include="City.h" />
     <ClInclude Include="pair.h" />
     <ClInclude Include="point.h" />

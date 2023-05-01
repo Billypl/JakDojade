@@ -30,7 +30,7 @@
     <ClCompile Include="vector.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
-    <ClCompile Include="CitiesMap.cpp">
+    <ClCompile Include="Cities.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="City.cpp">
@@ -53,7 +53,7 @@
     <ClInclude Include="algorithm.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
-    <ClInclude Include="CitiesMap.h">
+    <ClInclude Include="Cities.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="City.h">

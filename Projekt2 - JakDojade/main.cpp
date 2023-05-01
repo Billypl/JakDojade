@@ -7,19 +7,18 @@
 #include "vector.cpp"
 #include "string.h"
 
-#include "CitiesMap.h"
+#include "Cities.h"
 
 using std::cout;
 using std::endl;
 
 int main()
 {
-	CitiesMap citiesMap;
-	citiesMap.readMap();
-	citiesMap.loadCities();
+	Cities cities;
+	cities.readMap();
+	cities.loadCities();
 
 	cout << endl;
-	//citiesMap.printMap();
-	citiesMap.printCities();
+	cities.printCities();
 
 }
