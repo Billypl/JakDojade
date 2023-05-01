@@ -136,14 +136,14 @@ bool CitiesMap::isPartOfTheName(char ch)
 
 bool CitiesMap::isFirstLetter(int i, int j)
 {
-	return !isInBounds(i - 1, j) ||
-		isInBounds(i - 1, j) && !isPartOfTheName(map[i - 1][j]);
+	return isInBounds(i, j) && isPartOfTheName(map[i][j]) &&
+		(!isInBounds(i, j - 1) || !isPartOfTheName(map[i][j - 1]));
 }
 
 bool CitiesMap::isLastLetter(int i, int j)
 {
-	return !isInBounds(i + 1, j) ||
-		isInBounds(i + 1, j) && !isPartOfTheName(map[i + 1][j]);
+	return isInBounds(i, j) && isPartOfTheName(map[i][j]) &&
+		(!isInBounds(i, j + 1) || !isPartOfTheName(map[i][j + 1]));
 }
 
 void CitiesMap::printCities()
