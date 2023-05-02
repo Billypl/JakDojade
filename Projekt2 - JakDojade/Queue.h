@@ -8,6 +8,7 @@ class Queue
 
 public:
 	
+	T beginning();
 	T pop();
 	void add(T element);
 	size_t size();

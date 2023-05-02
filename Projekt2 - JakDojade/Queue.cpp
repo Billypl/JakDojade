@@ -2,6 +2,12 @@
 #include "List.cpp"
 
 template<typename T>
+T Queue<T>::beginning()
+{
+	return buffer[0];
+}
+
+template<typename T>
 T Queue<T>::pop()
 {
 	T tmp = buffer[0];

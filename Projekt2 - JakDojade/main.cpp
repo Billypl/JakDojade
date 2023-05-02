@@ -38,6 +38,7 @@ int main()
 	cout << endl;
 	cities.printMap();
 	cities.loadNeighbours();
+	cout << endl;
 	cities.printCities();
 
 }

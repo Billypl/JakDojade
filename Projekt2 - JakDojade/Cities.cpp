@@ -68,18 +68,13 @@ void Cities::printCities()
 			cout << "Neighbours: \n";
 			for (int j = 0; j < neighbours.size(); j++)
 			{
-				cout << " " << j << ". " << neighbours[j]->name << endl;
+				cout << " " << j << ". Name: " << neighbours[j].city->name << " distance: " << neighbours[j].distance << endl;
 			}
 		}
 	}
 }
 
 void Cities::loadNeighbours()
-{
-	floodFillForPixels();
-}
-
-void Cities::floodFillForPixels()
 {
 	vector<point> combinations;
 	combinations.add(
@@ -92,32 +87,29 @@ void Cities::floodFillForPixels()
 	for (auto& city : cities)
 	{
 		vector<vector<bool>> isVisited(map.size(), vector<bool>(map[0].size(), false));
-		int counter = 0;
-		Queue<point> queue;
+		Queue<pair<point, int>> queue;
 
-		queue.add(city.pos);
+		queue.add({ city.pos, -1 });
 		while (queue.size() > 0)
 		{
-			point p = queue.pop();
-			if (!isInBounds(p.x, p.y))
-				continue;
-
+			auto firstInQueue = queue.pop();
+			point p = firstInQueue.first;
 			isVisited[p.x][p.y] = true;
-			counter++;
 			for (auto& offset : combinations)
 			{
 				point nieghbour(p + offset);
-				if (isRoadPiece(nieghbour) && !isVisited[nieghbour.x][nieghbour.y])
-					queue.add(nieghbour);
+				if (isInBounds(p.x, p.y) && isRoadPiece(nieghbour) && !isVisited[nieghbour.x][nieghbour.y])
+				{
+					queue.add({ nieghbour, firstInQueue.second + 1 });
+				}
 			}
 			if (map[p.x][p.y] == '*' && p != city.pos)
 			{
-				city.neighbours.add(findCity(p));
+				city.neighbours.add(Neighbour(findCity(p), firstInQueue.second + 1));
 			}
 		}
 	}
 }
-
 
 bool Cities::isRoadPiece(const point& pos)
 {

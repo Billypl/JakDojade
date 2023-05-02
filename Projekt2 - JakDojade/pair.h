@@ -7,11 +7,11 @@ class pair
 
 public:
 
-	T1 a;
-	T2 b;
+	T1 first;
+	T2 second;
 
 	pair			() {};
-	pair			(T1 a, T2 b);
+	pair			(T1 first, T2 second);
 	void operator=  (const pair<T1, T2>& other);
 	bool operator== (const pair<T1, T2>& other) const;
 	bool operator!= (const pair<T1, T2>& other) const;
