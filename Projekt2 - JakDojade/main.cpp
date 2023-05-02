@@ -20,5 +20,6 @@ int main()
 
 	cout << endl;
 	cities.printCities();
+	cities.printMap();
 
 }

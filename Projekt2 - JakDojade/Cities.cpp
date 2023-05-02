@@ -5,6 +5,7 @@
 
 #define READ_FORWARD true
 #define READ_BACKWARD false
+#define DEBUG
 
 using std::cin;
 using std::cout;
@@ -14,11 +15,11 @@ void Cities::readMap()
 {
 	int w, h;
 	cin >> w >> h;
-	map.resize(w);
-	map.fill(vector<char>(h));
+	map.resize(h);
+	map.fill(vector<char>(w));
 
-	for (int i = 0; i < w; i++)
-		for (int j = 0; j < h; j++)
+	for (int i = 0; i < h; i++)
+		for (int j = 0; j < w; j++)
 			map[i][j] = readChar();
 }
 
@@ -85,6 +86,9 @@ void Cities::loadString(string& name, int i, int j,  bool readingTypeFlag)
 	while (isInBounds(i, j) && isPartOfTheName(map[i][j]))
 	{
 		name += map[i][j];
+#ifdef DEBUG
+		map[i][j] = '.';
+#endif // DEBUG
 		j += readingTypeFlag == READ_FORWARD ? 1 : -1;
 	}
 }
