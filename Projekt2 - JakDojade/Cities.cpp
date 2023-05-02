@@ -1,7 +1,11 @@
 #include "Cities.h"
 #include <iostream>
-#include "vector.cpp"
 #include "pair.cpp"
+#include "Queue.h"
+#include "Queue.cpp"
+#include "vector.h"
+#include "vector.cpp"
+
 
 #define READ_FORWARD true
 #define READ_BACKWARD false
@@ -34,11 +38,11 @@ void Cities::readMap()
 
 void Cities::printMap()
 {
-	for (int i = 0; i < map.size(); i++)
+	for (auto& row : map)
 	{
-		for (int j = 0; j < map[0].size(); j++)
+		for (auto& tile : row)
 		{
-			cout << map[i][j];
+			cout << tile;
 		}
 		cout << endl;
 	}
@@ -46,25 +50,102 @@ void Cities::printMap()
 
 void Cities::loadCities()
 {
-	for (int i = 0; i < cities.size(); i++)
+	for (auto& city : cities)
 	{
-		City& city = cities[i];
 		city.name = loadCityName(city.pos.x, city.pos.y);
 	}
+}
+
+void Cities::printCities()
+{
+	for (auto& city : cities)
+	{
+		cout << city.name << ": " << city.pos.x << "," << city.pos.y << endl;
+
+		auto& neighbours = city.neighbours;
+		if (!neighbours.isEmpty())
+		{
+			cout << "Neighbours: \n";
+			for (int j = 0; j < neighbours.size(); j++)
+			{
+				cout << " " << j << ". " << neighbours[j]->name << endl;
+			}
+		}
+	}
+}
+
+void Cities::loadNeighbours()
+{
+	floodFillForPixels();
+}
+
+void Cities::floodFillForPixels()
+{
+	vector<point> combinations;
+	combinations.add(
+		point(-1, 0),
+		point(0, 1),
+		point(1, 0),
+		point(0, -1)
+	);
+
+	for (auto& city : cities)
+	{
+		vector<vector<bool>> isVisited(map.size(), vector<bool>(map[0].size(), false));
+		int counter = 0;
+		Queue<point> queue;
+
+		queue.add(city.pos);
+		while (queue.size() > 0)
+		{
+			point p = queue.pop();
+			if (!isInBounds(p.x, p.y))
+				continue;
+
+			isVisited[p.x][p.y] = true;
+			counter++;
+			for (auto& offset : combinations)
+			{
+				point nieghbour(p + offset);
+				if (isRoadPiece(nieghbour) && !isVisited[nieghbour.x][nieghbour.y])
+					queue.add(nieghbour);
+			}
+			if (map[p.x][p.y] == '*' && p != city.pos)
+			{
+				city.neighbours.add(findCity(p));
+			}
+		}
+	}
+}
+
+
+bool Cities::isRoadPiece(const point& pos)
+{
+	return isInBounds(pos.x, pos.y) && (map[pos.x][pos.y] == '#'  || map[pos.x][pos.y] == '*');
+}
+
+City* Cities::findCity(const point& pos)
+{
+	for (auto& city : cities)
+	{
+		if (city.pos == pos)
+		{
+			return &city;
+		}
+	}
+	throw "No city found";
 }
 
 string Cities::loadCityName(int i, int j)
 {
 	string name;
-	const int tab[] = { -1, 0, 1 }; 
-	const int tabSize = 3;
-	for (int a = 0; a < tabSize; a++)
+	for (int a = -1; a <= 1; a++)
 	{
-		for (int b = 0; b < tabSize; b++)
+		for (int b = -1; b <= 1; b++)
 		{
-			if (isFirstLetter(i + tab[a], j + tab[b]) || isLastLetter(i + tab[a], j + tab[b]))
+			if (isFirstLetter(i + a, j + b) || isLastLetter(i + a, j + b))
 			{
-				loadStringGeneral(name, i + tab[a], j + tab[b]);
+				loadStringGeneral(name, i + a, j + b);
 				return name;
 			}
 		}
@@ -113,11 +194,6 @@ bool Cities::isLastLetter(int i, int j)
 		(!isInBounds(i, j + 1) || !isPartOfTheName(map[i][j + 1]));
 }
 
-void Cities::printCities()
-{
-	for (int i = 0; i < cities.size(); i++)
-		cout << cities[i].name << ": " << cities[i].pos.x << "," << cities[i].pos.y << endl;
-}
 
 char Cities::readChar()
 {

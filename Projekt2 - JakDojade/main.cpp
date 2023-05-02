@@ -6,6 +6,8 @@
 #include "vector.h"
 #include "vector.cpp"
 #include "string.h"
+#include "List.h"
+#include "List.cpp"
 
 #include "Cities.h"
 
@@ -21,22 +23,21 @@ void measureTime()
 	auto start = high_resolution_clock::now();
 	// insert function here
 	auto stop = high_resolution_clock::now();
-
 	auto duration = duration_cast<milliseconds>(stop - start);
-
 	cout << "Time taken by function: "
 		<< (duration.count() + 0.0) / 1000 << " microseconds" << endl;
-
 }
 
 int main()
 {
-	measureTime();
 	Cities cities;
+
 	cities.readMap();
 	cities.loadCities();
 
-	//cities.printCities();
-	//cities.printMap();
+	cout << endl;
+	cities.printMap();
+	cities.loadNeighbours();
+	cities.printCities();
 
 }

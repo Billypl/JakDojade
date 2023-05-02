@@ -129,9 +129,13 @@
   <ItemGroup>
     <ClCompile Include="Cities.cpp" />
     <ClCompile Include="City.cpp" />
+    <ClCompile Include="List.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Node.cpp" />
     <ClCompile Include="pair.cpp" />
     <ClCompile Include="point.cpp" />
+    <ClCompile Include="Queue.cpp" />
+    <ClCompile Include="Stack.cpp" />
     <ClCompile Include="string.cpp" />
     <ClCompile Include="vector.cpp" />
   </ItemGroup>
@@ -139,8 +143,12 @@
     <ClInclude Include="algorithm.h" />
     <ClInclude Include="Cities.h" />
     <ClInclude Include="City.h" />
+    <ClInclude Include="List.h" />
+    <ClInclude Include="Node.h" />
     <ClInclude Include="pair.h" />
     <ClInclude Include="point.h" />
+    <ClInclude Include="Queue.h" />
+    <ClInclude Include="Stack.h" />
     <ClInclude Include="string.h" />
     <ClInclude Include="vector.h" />
   </ItemGroup>

@@ -27,6 +27,7 @@ string::string(const vector<char>& other)
 
 string::string(const char* other)
 {
+	buffer.reserve(strlen(other) + 1);
 	for (int i = 0; i < strlen(other) + 1; i++)
 		buffer.add(other[i]);
 }

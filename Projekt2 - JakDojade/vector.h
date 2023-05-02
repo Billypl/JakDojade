@@ -1,4 +1,66 @@
 #pragma once
+#define BASIC_VECTOR_CAPACITY 8
+
+template<typename Vector>
+class VectorIterator
+{
+
+public:
+
+	using ValueType = typename Vector::ValueType;
+	using PointerType = ValueType*;
+	using ReferenceType = ValueType&;
+
+public:
+
+	VectorIterator(PointerType ptr)
+		: ptr(ptr) {}
+
+	VectorIterator& operator++()
+	{
+		ptr++;
+		return *this;
+	}
+	VectorIterator operator++(int)
+	{
+		VectorIterator iterator = *this;
+		++(*this);
+		return iterator;
+	}
+	VectorIterator& operator--()
+	{
+		ptr--;
+		return *this;
+	}
+	VectorIterator operator--(int)
+	{
+		VectorIterator iterator = *this;
+		--(*this);
+		return iterator;
+	}
+
+	bool operator==(const VectorIterator& other) const
+	{
+		return ptr == other.ptr;
+	}
+	bool operator!=(const VectorIterator& other) const
+	{
+		return !((*this) == other);
+	}
+	ReferenceType operator*()
+	{
+		return *ptr;
+	}
+	PointerType operator->()
+	{
+		return ptr;
+	}
+
+private:
+
+	PointerType ptr;
+
+};
 
 template <typename T>
 class vector
@@ -8,6 +70,12 @@ class vector
 	size_t _size;
 
 public:
+
+	using ValueType = T;
+	using Iterator = VectorIterator<vector<T>>;
+
+	Iterator begin();
+	Iterator end();
 
 	vector ();
 	vector (size_t size);

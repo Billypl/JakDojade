@@ -2,7 +2,18 @@
 #include "algorithm.h"
 #include <cstring>
 
-#define BASIC_VECTOR_CAPACITY 8
+
+template<typename T>
+typename vector<T>::Iterator vector<T>::begin()
+{
+	return vector<T>::Iterator(buffer);
+}
+
+template<typename T>
+typename vector<T>::Iterator vector<T>::end()
+{
+	return vector<T>::Iterator(buffer + _size);
+}
 
 template<typename T>
 bool vector<T>::isInBounds(size_t index) const
