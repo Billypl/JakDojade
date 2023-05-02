@@ -12,6 +12,8 @@ public:
 	point pos;
 	vector<City*> neighbours;
 	City() {};
+	City(point position)
+		: pos(position) {}
 	City(string name, point position)
 		: name(name), pos(position) {}
 

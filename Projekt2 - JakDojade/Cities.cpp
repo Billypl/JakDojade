@@ -19,8 +19,17 @@ void Cities::readMap()
 	map.fill(vector<char>(w));
 
 	for (int i = 0; i < h; i++)
+	{
 		for (int j = 0; j < w; j++)
-			map[i][j] = readChar();
+		{
+			char ch = readChar();
+			map[i][j] = ch;
+			if (ch == '*')
+			{
+				cities.add(City(point(i, j)));
+			}
+		}
+	}
 }
 
 void Cities::printMap()
@@ -37,16 +46,10 @@ void Cities::printMap()
 
 void Cities::loadCities()
 {
-	for (int i = 0; i < map.size(); i++)
+	for (int i = 0; i < cities.size(); i++)
 	{
-		for (int j = 0; j < map[0].size(); j++)
-		{
-			if (map[i][j] == '*')
-			{
-				City city(loadCityName(i, j), point(i, j));
-				cities.add(city);
-			}
-		}
+		City& city = cities[i];
+		city.name = loadCityName(city.pos.x, city.pos.y);
 	}
 }
 
