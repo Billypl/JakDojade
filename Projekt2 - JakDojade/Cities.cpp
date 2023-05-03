@@ -115,26 +115,52 @@ void Cities::readAndMakeQueries()
 	// TODO: readAndMakeQueries()
 }
 
+
+
 void Cities::findShortestPath(const string& source, const string& destination, bool showPath)
 {
-	vector<bool> isVisited(cities.size(), false);
-	Stack<City*> stack;
-	stack.add(findCity(source));
-	while (stack.size() > 0)
+	struct Vertex
 	{
-		City* v = stack.pop();
-		int vIndex = findCityIndex(v->pos);
-		if (!isVisited[vIndex])
+		City* currCity;
+		City* prevCity = nullptr;
+		int distance = INT_MAX;
+		bool isVisited = false;
+	};
+	vector<Vertex> graph(cities.size());
+	for (int i = 0; i < cities.size(); i++)
+	{
+		graph[i].currCity = &cities[i];
+	}
+	auto findVertex = [&](const string& cityName)
+	{
+		auto city = findCity(cityName);
+		for (Vertex& vertex : graph)
 		{
-			isVisited[vIndex] = true;
-			for (Neighbour neighbour : v->neighbours)
+			if (vertex.currCity == city)
 			{
-				if (!isVisited[findCityIndex(neighbour.city->pos)])
+				return &vertex;
+			}
+		}
+		throw "No city found";
+	};
+
+	Queue<Vertex*> queue;
+	queue.add(findVertex(source));
+	while (queue.size() > 0)
+	{
+		Vertex* v = queue.pop();
+		if (!v->isVisited)
+		{
+			v->isVisited = true;
+			for (Neighbour neighbour : v->currCity->neighbours)
+			{
+				Vertex* ngb = findVertex(neighbour.city->name);
+				if (!ngb->isVisited)
 				{
-					stack.add(neighbour.city);
+					queue.add(ngb);
 				}
 			}
-			cout << v->name << endl;
+			cout << v->currCity->name << endl;
 		}
 	}
 }
