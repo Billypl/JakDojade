@@ -11,7 +11,7 @@
 
 #define READ_FORWARD true
 #define READ_BACKWARD false
-#define DEBUG
+//#define DEBUG
 
 using std::cin;
 using std::cout;
@@ -89,7 +89,6 @@ void Cities::readAndLoadFlights()
 {
 	getchar(); // read enter after the board
 	int flightsCount = readInt();
-	cout << flightsCount;
 	
 	while (flightsCount--)
 	{
@@ -112,13 +111,26 @@ void Cities::readAndLoadFlights()
 
 void Cities::readAndMakeQueries()
 {
-	// TODO: readAndMakeQueries()
+	int queriesCount = readInt();
+
+	while (queriesCount--)
+	{
+		string source = readString();
+		string destination = readString();
+		int type = readInt();
+
+		findShortestPath(source, destination, type);
+	}
 }
 
-
-
-void Cities::findShortestPath(const string& source, const string& destination, bool showPath)
+void Cities::findShortestPath(const string& startingCity, const string& endingCity, bool showPath)
 {
+	if (startingCity == endingCity)
+	{
+		cout << 0 << endl;
+		return;
+	}
+
 	struct Vertex
 	{
 		City* currCity;
@@ -126,15 +138,26 @@ void Cities::findShortestPath(const string& source, const string& destination, b
 		int distance = INT_MAX;
 		bool isVisited = false;
 	};
-	vector<Vertex> graph(cities.size());
+	vector<Vertex> citiesTable(cities.size());
 	for (int i = 0; i < cities.size(); i++)
 	{
-		graph[i].currCity = &cities[i];
+		citiesTable[i].currCity = &cities[i];
 	}
-	auto findVertex = [&](const string& cityName)
+	auto findVertexByName = [&](const string& cityName)
 	{
 		auto city = findCity(cityName);
-		for (Vertex& vertex : graph)
+		for (Vertex& vertex : citiesTable)
+		{
+			if (vertex.currCity == city)
+			{
+				return &vertex;
+			}
+		}
+		throw "No city found";
+	};
+	auto findVertexByCity = [&](City* city)
+	{
+		for (Vertex& vertex : citiesTable)
 		{
 			if (vertex.currCity == city)
 			{
@@ -145,30 +168,50 @@ void Cities::findShortestPath(const string& source, const string& destination, b
 	};
 
 	Queue<Vertex*> queue;
-	queue.add(findVertex(source));
+	Vertex* src = findVertexByName(startingCity);
+	Vertex* dst = findVertexByName(endingCity);
+	src->isVisited = true;
+	src->distance = 0;
+	queue.add(src);
+
 	while (queue.size() > 0)
 	{
 		Vertex* v = queue.pop();
-		if (!v->isVisited)
+		for (Neighbour neighbour : v->currCity->neighbours)
 		{
-			v->isVisited = true;
-			for (Neighbour neighbour : v->currCity->neighbours)
+			Vertex* ngb = findVertexByName(neighbour.city->name);
+			int newDistance = v->distance + neighbour.distance;
+			if (newDistance < ngb->distance)
 			{
-				Vertex* ngb = findVertex(neighbour.city->name);
-				if (!ngb->isVisited)
-				{
-					queue.add(ngb);
-				}
+				ngb->distance = newDistance;
+				ngb->prevCity = v->currCity;
 			}
-			cout << v->currCity->name << endl;
+			if (!ngb->isVisited)
+			{
+				queue.add(ngb);
+				ngb->isVisited = true;
+			}
+		}
+		//cout << v->currCity->name << endl;
+	}
+
+	cout << dst->distance;
+	if (showPath == true)
+	{
+		vector<City*> path;
+		while (dst->currCity != src->currCity)
+		{
+			path.add(dst->currCity);
+			dst = findVertexByCity(dst->prevCity);
+		}
+		vector<City*>::Iterator city = path.end();
+		while (--city != path.begin())
+		{
+			cout << " " << (*city)->name;
 		}
 	}
+	cout << endl;
 }
-
-
-
-
-
 
 
 void Cities::loadNeighbours()
@@ -230,6 +273,8 @@ City* Cities::findCity(const string& name)
 			return &city;
 		}
 	}
+	throw "No city found!";
+	return nullptr;
 }
 
 int Cities::findCityIndex(const point& pos)
@@ -258,6 +303,8 @@ string Cities::loadCityName(int i, int j)
 			}
 		}
 	}
+	throw "Invalid city collocation";
+	return name;
 }
 
 void Cities::loadStringGeneral(string& name, int i, int j)

@@ -25,15 +25,5 @@ void measureTime()
 int main()
 {
 	Cities cities;
-
 	cities.setupCities();
-	
-	/*
-	cout << endl;
-	cities.printMap();
-	*/
-	cities.findShortestPath("GDANSK", "sad", false);
-	cout << endl;
-	//cities.printCities();
-
 }
