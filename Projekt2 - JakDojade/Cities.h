@@ -13,6 +13,8 @@ public:
 	vector<vector<char>> map;
 	vector<City> cities;
 
+	void setupCities();
+
 	void readMap();
 	void printMap();
 

@@ -32,12 +32,10 @@ int main()
 {
 	Cities cities;
 
-	cities.readMap();
-	cities.loadCities();
-
+	cities.setupCities();
+	
 	cout << endl;
 	cities.printMap();
-	cities.loadNeighbours();
 	cout << endl;
 	cities.printCities();
 

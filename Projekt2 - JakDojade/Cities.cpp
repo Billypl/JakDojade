@@ -15,6 +15,13 @@ using std::cin;
 using std::cout;
 using std::endl;
 
+void Cities::setupCities()
+{
+	readMap();
+	loadCities();
+	loadNeighbours();
+}
+
 void Cities::readMap()
 {
 	int w, h;
@@ -92,20 +99,23 @@ void Cities::loadNeighbours()
 		queue.add({ city.pos, -1 });
 		while (queue.size() > 0)
 		{
-			auto firstInQueue = queue.pop();
-			point p = firstInQueue.first;
+			int distance = queue.beginning().second;
+			point p = queue.beginning().first;
+			queue.pop();
+
 			isVisited[p.x][p.y] = true;
+			if (map[p.x][p.y] == '*' && p != city.pos)
+			{
+				city.neighbours.add(Neighbour(findCity(p), distance + 1));
+				continue;
+			}
 			for (auto& offset : combinations)
 			{
 				point nieghbour(p + offset);
 				if (isInBounds(p.x, p.y) && isRoadPiece(nieghbour) && !isVisited[nieghbour.x][nieghbour.y])
 				{
-					queue.add({ nieghbour, firstInQueue.second + 1 });
+					queue.add({ nieghbour, distance + 1 });
 				}
-			}
-			if (map[p.x][p.y] == '*' && p != city.pos)
-			{
-				city.neighbours.add(Neighbour(findCity(p), firstInQueue.second + 1));
 			}
 		}
 	}
