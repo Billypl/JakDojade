@@ -11,7 +11,7 @@
 
 #define READ_FORWARD true
 #define READ_BACKWARD false
-//#define DEBUG
+#define DEBUG
 
 using std::cin;
 using std::cout;
@@ -21,7 +21,7 @@ void Cities::setupCities()
 {
 	readMap();
 	loadCities();
-	loadNeighbours();
+	loadNeighbours(); 
 	readAndLoadFlights();
 	readAndMakeQueries();
 }
@@ -192,7 +192,6 @@ void Cities::findShortestPath(const string& startingCity, const string& endingCi
 				ngb->isVisited = true;
 			}
 		}
-		//cout << v->currCity->name << endl;
 	}
 
 	cout << dst->distance;
@@ -236,7 +235,6 @@ void Cities::loadNeighbours()
 			point p = queue.beginning().first;
 			queue.pop();
 
-			isVisited[p.x][p.y] = true;
 			if (map[p.x][p.y] == '*' && p != city.pos)
 			{
 				city.neighbours.add(Neighbour(findCity(p), distance + 1));
@@ -247,6 +245,7 @@ void Cities::loadNeighbours()
 				point nieghbour(p + offset);
 				if (isInBounds(p.x, p.y) && isRoadPiece(nieghbour) && !isVisited[nieghbour.x][nieghbour.y])
 				{
+					isVisited[nieghbour.x][nieghbour.y] = true;
 					queue.add({ nieghbour, distance + 1 });
 				}
 			}
