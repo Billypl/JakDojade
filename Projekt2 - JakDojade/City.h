@@ -36,5 +36,17 @@ public:
 	City(string name, point position)
 		: name(name), pos(position) {}
 
+	Neighbour* findNeighbour(const string& name)
+	{
+		for (auto& neighbour : neighbours)
+		{
+			if (neighbour.city->name == name)
+			{
+				return &neighbour;
+			}
+		}
+		return nullptr;
+	}
+
 };
 

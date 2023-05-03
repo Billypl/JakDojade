@@ -20,6 +20,7 @@ void Cities::setupCities()
 	readMap();
 	loadCities();
 	loadNeighbours();
+	readFlights();
 }
 
 void Cities::readMap()
@@ -81,6 +82,31 @@ void Cities::printCities()
 	}
 }
 
+void Cities::readFlights()
+{
+	getchar(); // read enter after the board
+	int flightsCount = readInt();
+	cout << flightsCount;
+	
+	while (flightsCount--)
+	{
+		string source = readString();
+		string destination = readString();
+		int time = readInt();
+
+		City* city = findCity(source);
+		Neighbour* neighbour = city->findNeighbour(destination);
+		if (neighbour != nullptr)
+		{
+			neighbour->distance = sbl::min(neighbour->distance, time);
+		}
+		else
+		{
+			city->neighbours.add(Neighbour(findCity(destination), time));
+		}
+	}
+}
+
 void Cities::loadNeighbours()
 {
 	vector<point> combinations;
@@ -136,6 +162,17 @@ City* Cities::findCity(const point& pos)
 		}
 	}
 	throw "No city found";
+}
+
+City* Cities::findCity(const string& name)
+{
+	for (auto& city : cities)
+	{
+		if (city.name == name)
+		{
+			return &city;
+		}
+	}
 }
 
 string Cities::loadCityName(int i, int j)
@@ -203,6 +240,32 @@ char Cities::readChar()
 	while (ch == ' ' || ch == '\n')
 		ch = (char)getchar();
 	return ch;
+}
+
+string Cities::readString()
+{
+	char ch = getchar();
+	string str;
+	while (ch != '\n' && ch != ' ')
+	{
+		str += ch;
+		ch = getchar();
+	}
+	return str;
+}
+
+
+int Cities::readInt()
+{
+	int number = 0, c;
+	do {
+		c = getchar();
+		if (c >= '0' && c <= '9')
+		{
+			number = number * 10 + (c - '0');
+		}
+	} while (c != '\n');
+	return number;
 }
 
 bool Cities::isInBounds(int i, int j)

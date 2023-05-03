@@ -21,6 +21,9 @@ public:
 	void loadCities();
 	void printCities();
 
+	void readFlights();
+
+
 private:
 
 	string loadCityName(int i, int j);
@@ -38,12 +41,14 @@ public:
 private:
 
 	City* findCity(const point& pos);
+	City* findCity(const string& name);
 
 private:
 
 	bool isInBounds(int i, int j);
 	char readChar();
-	void floodFillForPixels();
+	string readString();
+	int readInt();
 
 };
 

@@ -34,8 +34,10 @@ int main()
 
 	cities.setupCities();
 	
+	/*
 	cout << endl;
 	cities.printMap();
+	*/
 	cout << endl;
 	cities.printCities();
 
