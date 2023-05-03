@@ -1,6 +1,4 @@
 #include "Stack.h"
-#include "vector.cpp"
-#include "List.cpp"
 
 template<typename T>
 T Stack<T>::pop()

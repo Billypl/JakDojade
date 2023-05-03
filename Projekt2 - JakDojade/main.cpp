@@ -1,13 +1,7 @@
 #include <iostream>
 #include "algorithm.h"
-#include "pair.h"
-#include "pair.cpp"
-#include "point.h"
 #include "vector.h"
 #include "vector.cpp"
-#include "string.h"
-#include "List.h"
-#include "List.cpp"
 
 #include "Cities.h"
 
@@ -38,7 +32,8 @@ int main()
 	cout << endl;
 	cities.printMap();
 	*/
+	cities.findShortestPath("GDANSK", "sad", false);
 	cout << endl;
-	cities.printCities();
+	//cities.printCities();
 
 }

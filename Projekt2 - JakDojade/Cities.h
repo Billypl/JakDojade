@@ -21,8 +21,10 @@ public:
 	void loadCities();
 	void printCities();
 
-	void readFlights();
+	void readAndLoadFlights();
+	void readAndMakeQueries();
 
+	void findShortestPath(const string& source, const string& destination, bool showPath);
 
 private:
 
@@ -42,6 +44,8 @@ private:
 
 	City* findCity(const point& pos);
 	City* findCity(const string& name);
+
+	int findCityIndex(const point& pos);
 
 private:
 

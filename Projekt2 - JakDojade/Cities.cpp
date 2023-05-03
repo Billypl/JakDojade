@@ -1,11 +1,13 @@
 #include "Cities.h"
-#include <iostream>
-#include "pair.cpp"
-#include "Queue.h"
-#include "Queue.cpp"
 #include "vector.h"
 #include "vector.cpp"
-
+#include <iostream>
+#include "pair.cpp"
+#include "List.cpp"
+#include "Queue.h"
+#include "Queue.cpp"
+#include "Stack.h"
+#include "Stack.cpp"
 
 #define READ_FORWARD true
 #define READ_BACKWARD false
@@ -20,7 +22,8 @@ void Cities::setupCities()
 	readMap();
 	loadCities();
 	loadNeighbours();
-	readFlights();
+	readAndLoadFlights();
+	readAndMakeQueries();
 }
 
 void Cities::readMap()
@@ -82,7 +85,7 @@ void Cities::printCities()
 	}
 }
 
-void Cities::readFlights()
+void Cities::readAndLoadFlights()
 {
 	getchar(); // read enter after the board
 	int flightsCount = readInt();
@@ -106,6 +109,41 @@ void Cities::readFlights()
 		}
 	}
 }
+
+void Cities::readAndMakeQueries()
+{
+	// TODO: readAndMakeQueries()
+}
+
+void Cities::findShortestPath(const string& source, const string& destination, bool showPath)
+{
+	vector<bool> isVisited(cities.size(), false);
+	Stack<City*> stack;
+	stack.add(findCity(source));
+	while (stack.size() > 0)
+	{
+		City* v = stack.pop();
+		int vIndex = findCityIndex(v->pos);
+		if (!isVisited[vIndex])
+		{
+			isVisited[vIndex] = true;
+			for (Neighbour neighbour : v->neighbours)
+			{
+				if (!isVisited[findCityIndex(neighbour.city->pos)])
+				{
+					stack.add(neighbour.city);
+				}
+			}
+			cout << v->name << endl;
+		}
+	}
+}
+
+
+
+
+
+
 
 void Cities::loadNeighbours()
 {
@@ -154,14 +192,7 @@ bool Cities::isRoadPiece(const point& pos)
 
 City* Cities::findCity(const point& pos)
 {
-	for (auto& city : cities)
-	{
-		if (city.pos == pos)
-		{
-			return &city;
-		}
-	}
-	throw "No city found";
+	return &cities[findCityIndex(pos)];
 }
 
 City* Cities::findCity(const string& name)
@@ -173,6 +204,18 @@ City* Cities::findCity(const string& name)
 			return &city;
 		}
 	}
+}
+
+int Cities::findCityIndex(const point& pos)
+{
+	for (int i = 0; i < cities.size(); i++)
+	{
+		if (cities[i].pos == pos)
+		{
+			return i;
+		}
+	}
+	throw "No city found";
 }
 
 string Cities::loadCityName(int i, int j)

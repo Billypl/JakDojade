@@ -1,5 +1,4 @@
 #include "Queue.h"
-#include "List.cpp"
 
 template<typename T>
 T Queue<T>::beginning()
